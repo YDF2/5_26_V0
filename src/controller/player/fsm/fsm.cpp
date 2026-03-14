@@ -160,10 +160,10 @@ task_list FSMStateKickBall::OnStateTick()
        //  LOG(LOG_INFO) << "FSMStateKickBall: 离球太远";
     }
 
-    if (ball.beta > 0.1 && fabs(ball.alpha) > retreat_alpha_)
+    if (ball.beta > retreat_beta_ && fabs(ball.alpha) > retreat_alpha_)
     { // 若离球太近
         tasks.push_back(make_shared<WalkTask>(-0.015, 0.0, 0.0, true));
-        // LOG(LOG_INFO) << "FSMStateKickBall: 离球太近" << endl;
+        LOG(LOG_INFO) << "FSMStateKickBall: 离球太近" << endl;
         // LOG(LOG_INFO) << "FSMStateKickBall: 离球太近--if";
     }
     else
@@ -182,7 +182,7 @@ task_list FSMStateKickBall::OnStateTick()
            // LOG(LOG_INFO) << "FSMStateKickBall: left转向，调整方向" << endl;
         }
         //调整左右
-        else if (ball.alpha > -0.07 && self.dir < self2left_dir && self.dir > self2right_dir)
+        else if (ball.alpha > fine_tune_alpha_max_ && self.dir < self2left_dir && self.dir > self2right_dir)
         {
            /* if(ball.beta>0.50)
             {
@@ -192,7 +192,7 @@ task_list FSMStateKickBall::OnStateTick()
             tasks.push_back(std::make_shared<WalkTask>(0.0, -0.01, 0, true));
            // LOG(LOG_INFO) << "FSMStateKickBall: right横移，调整左右" << endl;
         }
-        else if (ball.alpha < -0.20 && self.dir < self2left_dir && self.dir > self2right_dir)
+        else if (ball.alpha < fine_tune_alpha_min_ && self.dir < self2left_dir && self.dir > self2right_dir)
         {
            /* if(ball.beta>0.50)
             {
@@ -205,12 +205,12 @@ task_list FSMStateKickBall::OnStateTick()
         else
         {
             //调整前后
-            if (ball.beta < 0.04) // ball.beta < 0.39 BEFORE
+            if (ball.beta < fine_tune_beta_min_) // ball.beta < 0.39 BEFORE
             {
                 tasks.push_back(std::make_shared<WalkTask>(0.015, 0.0, 0, true));
             //     LOG(LOG_INFO) << "FSMStateKickBall: 前进" << endl;
             }
-            else if (ball.beta > 0.08) // 45before
+            else if (ball.beta > fine_tune_beta_max_) // 45before
             {
                 tasks.push_back(std::make_shared<WalkTask>(-0.01, 0.0, 0.0, true));
               //  LOG(LOG_INFO) << "FSMStateKickBall: 后退" << endl;
@@ -222,7 +222,7 @@ task_list FSMStateKickBall::OnStateTick()
                 LOG(LOG_INFO) << "FSMStateKickBall: 踢球" << endl;
                 //return fsm_->Trans(FSM_STATE_DRIBBLE);
             }
-           // LOG(LOG_WARN)<<"ball_alpha="<<ball.alpha<<endl;
+            LOG(LOG_WARN)<<"ball_alpha="<<ball.alpha<<endl;
             LOG(LOG_WARN)<<"ball_beta="<<ball.beta<<endl;
         }
     }

@@ -1,4 +1,4 @@
-# seu-unirobot-guidance-v1
+# seu-unirobot-guidance-v2-YDF
 东南大学RoboCup Kidsize 校队代码使用指引
 
 This project contains a controller, some debug tools and some scripts for seu-robocup kidszie team. The controller and debug tools are written in c++. The scripts are written in python.
